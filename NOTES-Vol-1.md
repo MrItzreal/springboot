@@ -119,9 +119,62 @@
   <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      </dependency>
+  </dependency>
   ```
 
 ---
 
-_Generated on: 2025-05-06_
+# Spring Boot Annotations Overview
+
+Annotations are labels or tags that we add in the code to give instructions or additional context to the compiler. We can apply them to: classes, methods, fields, parameters etc.
+
+They significantly simplify the development process by reducing boilerplate, streamlining configuration, and enabling core features like dependency injection and auto-configuration.
+
+This document provides a concise overview of some of the most commonly used Spring Boot annotations.
+
+## Core Annotations
+
+These annotations are fundamental to defining and managing beans within the Spring IoC (Inversion of Control) container.
+
+- `@Component`: Marks a class as a Spring-managed component, also known as a bean. Spring will automatically detect and register beans annotated with `@Component`.
+- `@Service`: A specialized form of `@Component` that indicates a class provides business logic or services within the application. It's a semantic distinction that can improve code organization.
+- `@Repository`: Another specialization of `@Component`, used to mark classes responsible for data access operations (DAOs - Data Access Objects). This annotation often provides additional exception translation for persistence-related exceptions.
+- `@Controller`: Defines a class as a controller in the Model-View-Controller (MVC) architectural pattern, responsible for handling incoming web requests and returning responses.
+- `@Configuration`: Indicates that a class provides bean definitions. Methods within a `@Configuration` class annotated with `@Bean` will produce beans managed by the Spring container.
+- `@Bean`: Marks a method within a `@Configuration` class that creates and configures a bean. The name of the bean will default to the method name.
+- `@Autowired`: Enables dependency injection. It is used to automatically inject dependencies (other beans) into a class, constructor, method, or field.
+- `@Qualifier`: Used in conjunction with `@Autowired` to resolve ambiguity when multiple beans of the same type are available in the Spring context. You can specify the name of the bean to be injected using `@Qualifier("beanName")`.
+- `@Value`: Injects values from external configuration sources such as properties files (`application.properties`, `application.yml`) or environment variables into fields. You can use SpEL (Spring Expression Language) within the `@Value` annotation (e.g., `@Value("${my.property}")`).
+- `@Data`: This is a Lombok annotation (requires the Lombok library to be included in your project). It automatically generates boilerplate code for getters, setters, `equals()`, `hashCode()`, and `toString()` methods for all fields in the class, significantly reducing code verbosity.
+
+## Spring Boot Annotations
+
+These annotations are specific to Spring Boot and provide convenient ways to bootstrap and configure your application.
+
+- `@SpringBootApplication`: A convenience annotation that combines three other important annotations:
+  - `@Configuration`: Marks the class as a source of bean definitions.
+  - `@EnableAutoConfiguration`: Enables Spring Boot's auto-configuration mechanism, which automatically configures your Spring application based on the dependencies you have added.
+  - `@ComponentScan`: Tells Spring where to look for other components, controllers, services, etc. (typically the package of the main application class and its sub-packages).
+- `@EnableAutoConfiguration`: Enables Spring Boot's automatic configuration of the Spring Application Context, attempting to automatically configure your application based on the dependencies you've added.
+- `@ConditionalOnClass`: Allows you to conditionally configure a bean only if a specific class is present on the classpath. This is useful for optional dependencies.
+- `@ConditionalOnMissingBean`: Configures a bean only if a bean of a certain type is not already present in the Spring Application Context. This allows for default implementations that can be easily overridden.
+
+## Web Annotations
+
+These annotations are commonly used when building web applications and RESTful APIs with Spring Boot.
+
+- `@RestController`: A convenience annotation that combines `@Controller` and `@ResponseBody`. Classes annotated with `@RestController` handle incoming web requests and directly return data in formats like JSON or XML, making it suitable for building RESTful APIs.
+- `@RequestMapping`: Used to map HTTP requests to specific handler methods in controllers. You can specify the URL path, HTTP method (GET, POST, etc.), and other request attributes.
+- `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`: These are specialized forms of `@RequestMapping` that provide more concise syntax for mapping HTTP GET, POST, PUT, and DELETE requests, respectively. For example, `@GetMapping("/users")` is equivalent to `@RequestMapping(method = RequestMethod.GET, path = "/users")`.
+- `@PathVariable`: Used to bind URL path segments to method parameters in controller handler methods. For example, `@GetMapping("/users/{id}")` and a method parameter `@PathVariable Long id` would extract the value of the `{id}` segment from the URL.
+- `@ResponseBody`: Indicates that the return value of a controller method should be directly written to the HTTP response body (e.g., as JSON or XML). This is commonly used in RESTful APIs.
+
+## Other Annotations
+
+Here are a few other useful annotations you might encounter:
+
+- `@Cacheable`: Enables caching for the result of a method. Subsequent calls with the same arguments will return the cached result, improving performance. This typically requires a configured caching provider.
+- `@Document`: When working with NoSQL databases like MongoDB, this annotation (often from Spring Data MongoDB) maps a Java class to a document in a MongoDB collection.
+- `@ExceptionHandler`: Used within a `@Controller` or `@RestController` class (or a `@ControllerAdvice` for global exception handling) to define methods that handle specific exceptions thrown by the application. This allows for centralized error handling.
+
+In conclusion, mastering these annotations is fundamental to developing efficient, well-structured, and maintainable Spring Boot applications. They abstract away much of the underlying configuration, allowing developers to concentrate on the core business logic of their applications.
