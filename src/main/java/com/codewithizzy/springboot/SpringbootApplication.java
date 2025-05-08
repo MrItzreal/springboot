@@ -1,5 +1,6 @@
 package com.codewithizzy.springboot;
 
+import org.springframework.context.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,10 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringbootApplication {
 
 	public static void main(String[] args) {
-		// SpringApplication.run(SpringbootApplication.class, args);
-
-		var orderService = new OrderService(new PayPalPaymentService());
+		ApplicationContext context = SpringApplication.run(SpringbootApplication.class, args);
+		var orderService = context.getBean(OrderService.class);
 		orderService.placeOrder();
-
 	}
 }
