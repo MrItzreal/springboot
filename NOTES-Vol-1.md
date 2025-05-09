@@ -178,3 +178,45 @@ Here are a few other useful annotations you might encounter:
 - `@ExceptionHandler`: Used within a `@Controller` or `@RestController` class (or a `@ControllerAdvice` for global exception handling) to define methods that handle specific exceptions thrown by the application. This allows for centralized error handling.
 
 In conclusion, mastering these annotations is fundamental to developing efficient, well-structured, and maintainable Spring Boot applications. They abstract away much of the underlying configuration, allowing developers to concentrate on the core business logic of their applications.
+
+# Spring Bean Scopes
+
+Bean scope defines the lifecycle and visibility of a bean instance within the Spring IoC (Inversion of Control) container. It determines how many instances of a bean are created and how they are shared.
+
+### A. Singleton (Default Scope)
+
+- **Explanation:** Only **one single instance** of the bean is created per Spring IoC container. Every request for this bean receives a reference to this same shared instance.
+- **Lifecycle:** Fully managed by Spring, from creation to destruction.
+- **Use Cases:** Stateless services, repositories, configuration classes, shared utility components.
+
+### B. Prototype
+
+- **Explanation:** A **new instance** of the bean is created every time it is requested from the Spring container or injected into another bean.
+- **Lifecycle:** Spring creates and configures the bean but does not manage its complete destruction lifecycle (destruction callbacks are not automatically called without custom configuration). The client code is responsible after creation.
+- **Use Cases:** Stateful beans where each component or user needs an independent instance (e.g., a user-specific builder object, a new connection object).
+
+### C. Request (Web-Aware Scope)
+
+- **Explanation:** A **new instance** of the bean is created for each individual **HTTP request**. The instance is destroyed once the request is completed.
+- **Context:** Only applicable in a web-aware Spring `ApplicationContext` (e.g., Spring MVC).
+- **Use Cases:** Holding request-specific data like request parameters, user information for the current request.
+
+### D. Session (Web-Aware Scope)
+
+- **Explanation:** A **new instance** of the bean is created for each **HTTP Session**. The same instance is shared across all requests within that same session. The instance is destroyed when the HTTP session is invalidated.
+- **Context:** Only applicable in a web-aware Spring `ApplicationContext`.
+- **Use Cases:** User-specific data that persists across multiple requests in a session (e.g., user login status, shopping cart).
+
+### E. Application (Web-Aware Scope)
+
+- **Explanation:** Only **one instance** of the bean is created per `ServletContext` (i.e., for the entire web application). It acts like a global singleton within the web application's context.
+- **Context:** Only applicable in a web-aware Spring `ApplicationContext`.
+- **Use Cases:** Application-wide shared resources, global configurations, or counters.
+
+### F. WebSocket (Web-Aware Scope)
+
+- **Explanation:** A **new instance** of the bean is created for each **WebSocket session**. The instance lives as long as the WebSocket session is active.
+- **Context:** Only applicable in a web-aware Spring `ApplicationContext` with WebSocket support.
+- **Use Cases:** Managing state specific to an individual WebSocket connection (e.g., user-specific chat state).
+
+---
