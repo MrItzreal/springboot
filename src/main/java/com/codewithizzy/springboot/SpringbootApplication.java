@@ -10,7 +10,10 @@ public class SpringbootApplication {
 		// 'ctx' short for context
 		var ctx = SpringApplication.run(SpringbootApplication.class, args);
 
-		MyFirstClass myFirstClass = ctx.getBean(MyFirstClass.class);
-		System.out.println(myFirstClass.sayHello());
+		MyFirstService myFirstService = ctx.getBean(MyFirstService.class);
+		System.out.println(myFirstService.tellAStory());
+		System.out.println(myFirstService.getJavaVersion());
+		System.out.println(myFirstService.getOSVersion());
+		System.out.println(myFirstService.readProp());
 	}
 }
