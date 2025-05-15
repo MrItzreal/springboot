@@ -109,4 +109,22 @@
   - It also allows for more specific targeting by Spring features or tools (e.g., aspect-oriented programming pointcuts might be defined to specifically target `@Service` beans).
   - **Recommendation:** Use `@Service` for classes that implement business logic or service facades, and `@Component` for more generic, utility-like beans that don't fit into other specific stereotypes like `@Repository` or `@Controller`.
 
----
+# Switching Active Spring Boot Profiles
+
+This project demonstrates how to switch between different Spring Boot profiles using two methods:
+
+## 1. Setting `spring.profiles.active` in `application.properties`
+
+- Open the `src/main/resources/application.properties` file.
+- Add the line `spring.profiles.active=your_profile_name`, replacing `your_profile_name` with the desired profile (e.g., `dev`, `prod`).
+- When the application starts, it will load properties from `application-{your_profile_name}.properties` (if it exists) and activate the specified profile.
+
+## 2. Setting `SPRING_PROFILES_ACTIVE` as an Environment Variable
+
+- Before running the application, set the `SPRING_PROFILES_ACTIVE` environment variable to the desired profile name.
+  - **Example (Linux/macOS):** `export SPRING_PROFILES_ACTIVE=dev`
+  - **Example (Windows):** `set SPRING_PROFILES_ACTIVE=dev`
+- Run the application from the same terminal session where you set the environment variable.
+- The application will activate the specified profile.
+
+  **Note:** Environment variables take precedence over settings in `application.properties`. To deactivate a profile set via environment variable, unset the variable (e.g., `unset SPRING_PROFILES_ACTIVE` on Linux/macOS).
