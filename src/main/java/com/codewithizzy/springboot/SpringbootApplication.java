@@ -1,5 +1,7 @@
 package com.codewithizzy.springboot;
 
+import java.util.Collections;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,7 +10,9 @@ public class SpringbootApplication {
 
 	public static void main(String[] args) {
 		// 'ctx' short for context
-		var ctx = SpringApplication.run(SpringbootApplication.class, args);
+		var app = new SpringApplication(SpringbootApplication.class);
+		app.setDefaultProperties(Collections.singletonMap("spring.profiles.active", "test"));
+		var ctx = app.run(args);
 
 		MyFirstService myFirstService = ctx.getBean(MyFirstService.class);
 		System.out.println(myFirstService.tellAStory());
