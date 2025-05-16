@@ -18,6 +18,13 @@ public class FirstController {
   @PostMapping("/post")
   public String post(
       @RequestBody String message) {
-    return "Request Accepted and message is: " + message;
+    return "Request accepted and message is : " + message;
   }
+
+  @PostMapping("/post-order")
+  public String post(
+      @RequestBody Order order) {
+    return "Request accepted and order is : " + order.toString();
+  }
+
 }

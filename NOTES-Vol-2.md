@@ -128,3 +128,40 @@ This project demonstrates how to switch between different Spring Boot profiles u
 - The application will activate the specified profile.
 
   **Note:** Environment variables take precedence over settings in `application.properties`. To deactivate a profile set via environment variable, unset the variable (e.g., `unset SPRING_PROFILES_ACTIVE` on Linux/macOS).
+
+  # `@JsonProperty` Annotation
+
+The `@JsonProperty` annotation in Spring Boot is used to customize the name of a field when serializing (converting Java object to JSON) or deserializing (converting JSON to Java object) data.
+
+## When to Use `@JsonProperty`
+
+- **External API Compatibility:** When interacting with external APIs that use different naming conventions for fields than your Java code (e.g., `customer_name` instead of `customerName`).
+- **Legacy Data Structures:** When working with databases or data formats that use a different naming convention.
+- **Specific Serialization Requirements:** When you want to expose a different name for a field in your JSON output for security or other reasons.
+
+## Example
+
+```java
+public class Order {
+  @JsonProperty("customer_name")
+  private String customerName;
+  private String productName;
+  private int quantity;
+  
+  // getters and setters (Would go below)
+}
+```
+
+In this example, the `customerName` field in the `Order` class will be serialized and deserialized as `customer_name` in the JSON data.
+
+## When to Avoid `@JsonProperty`
+
+- When you can use consistent naming conventions between your Java code and JSON representation.
+- When it introduces unnecessary complexity and confusion.
+
+## Best Practices
+
+- Prefer consistent naming conventions whenever possible.
+- Use a consistent naming strategy (e.g., `spring.jackson.property-naming-strategy=SNAKE_CASE`) in your `application.properties` or `application.yml` file to automatically translate between naming conventions.
+- Document `@JsonProperty` usage with comments explaining why it's necessary.
+- Minimize its use to only when absolutely necessary.
