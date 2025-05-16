@@ -1,7 +1,5 @@
 package com.codewithizzy.springboot;
 
-import java.util.Collections;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,16 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringbootApplication {
 
 	public static void main(String[] args) {
-		// 'ctx' short for context
-		var app = new SpringApplication(SpringbootApplication.class);
-		app.setDefaultProperties(Collections.singletonMap("spring.profiles.active", "dev"));
-		var ctx = app.run(args);
-
-		MyFirstService myFirstService = ctx.getBean(MyFirstService.class);
-		System.out.println(myFirstService.tellAStory());
-		System.out.println(myFirstService.getCustomProperty());
-		System.out.println(myFirstService.getCustomPropertyInt());
-		System.out.println(myFirstService.getCustomPropertyFromAnotherFile());
-		System.out.println(myFirstService.getCustomPropertyFromAnotherFile2());
+		SpringApplication.run(SpringbootApplication.class, args);
 	}
 }
