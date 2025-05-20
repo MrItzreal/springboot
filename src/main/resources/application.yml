@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demo_db # The JDBC URL for your PostgreSQL DB
+    username: postgres # Your database username
+    password: 1234 # Your database password
+    driver-class-name: org.postgresql.Driver # The JDBC driver for PostgreSQL
+  jpa:
+    hibernate:
+      ddl-auto: create # Controls schema generation
+    show-sql: true # Logs executed SQL statements to the console
+    properties:
+      hibernate:
+        "[format_sql]": true # Formats the logged SQL to be more readable
+    database: postgresql # Informs Spring Data of the database type
+    database-platform: org.hibernate.dialect.PostgreSQLDialect # Specifies the SQL dialect for Hibernate
