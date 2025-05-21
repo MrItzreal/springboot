@@ -1,21 +1,28 @@
 package com.codewithizzy.springboot;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 // import jakarta.persistence.Table;
 
 // We need to specify a primary key when working with entities
 
 @Entity
-// @Table(name= "IzzyDev")
+// @Table(name = "IzzyDev")
 public class Student {
 
   @Id
+  @GeneratedValue
   private Integer id;
+  @Column(name = "c_fname", length = 20)
   private String firstName;
   private String lastName;
+  @Column(unique = true)
   private String email;
   private int age;
+  @Column(updatable = false, insertable = false)
+  private String some_column;
 
   // 'Default' Constructor
   public Student() {
