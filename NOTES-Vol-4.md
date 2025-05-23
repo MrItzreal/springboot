@@ -169,3 +169,34 @@ Choosing the right strategy depends on your specific database, performance requi
   ```
 
 These annotations provide powerful control over the Object-Relational Mapping (ORM) process, allowing developers to precisely define how their Java objects interact with the database schema.
+
+# Understanding Database Sequences in JPA/Hibernate
+
+## What is a Sequence?
+
+A **Sequence** is a special object in your database (like PostgreSQL) whose only job is to generate a sequence of unique numbers in a specific order (e.g., 1, 2, 3, 4, ...). It's essentially a dedicated, thread-safe number counter managed by the database itself.
+
+## Why Was It Created?
+
+A sequence was likely created in your database for one of the following reasons:
+
+1.  **Explicit Strategy**: You used `@GeneratedValue(strategy = GenerationType.SEQUENCE)` on your entity's ID field.
+2.  **Automatic Strategy**: You used the default `@GeneratedValue(strategy = GenerationType.AUTO)`, and Hibernate determined that `SEQUENCE` is the most appropriate strategy for your database (e.g., PostgreSQL).
+
+If you have `spring.jpa.hibernate.ddl-auto` set to `create` or `update` in your `application.yml` or `application.properties` file, Hibernate automatically executes the necessary SQL command (`CREATE SEQUENCE ...`) to create this sequence object for you.
+
+## How Does It Work?
+
+When you tell JPA to save a new entity (like a new `Student`), the following steps occur:
+
+1.  **Request Next Value**: Before inserting the new record, your application asks the database sequence, "What's the next available number?"
+2.  **Database Responds**: The sequence provides the next unique number in its series (e.g., `101`).
+3.  **Set the ID**: Your application sets the `id` field of your `Student` object to `101`.
+4.  **Insert the Row**: Your application then runs the `INSERT` command with the ID already populated.
+    ```sql
+    INSERT INTO student (id, first_name, ...) VALUES (101, 'Izzy', ...);
+    ```
+
+### Sequence vs. Identity
+
+This process is different from the `IDENTITY` strategy, where the database itself assigns the ID _during_ the `INSERT` operation. Using a `SEQUENCE` allows your application to know the entity's ID _before_ it's officially saved, which can be more efficient, especially for batching multiple inserts together.
