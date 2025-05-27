@@ -1,10 +1,14 @@
 package com.codewithizzy.springboot;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 // import jakarta.persistence.Table;
+import jakarta.persistence.OneToOne;
 
 // We need to specify a primary key when working with entities
 
@@ -21,8 +25,15 @@ public class Student {
   @Column(unique = true)
   private String email;
   private int age;
-  @Column(updatable = false, insertable = false)
-  private String some_column;
+
+  // StudentProfile 'object'
+  @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+  private StudentProfile studentProfile;
+
+  // Link between School entity & Student
+  @ManyToOne
+  @JoinColumn(name = "school_id")
+  private School school;
 
   // 'Default' Constructor
   public Student() {
@@ -80,4 +91,21 @@ public class Student {
   public void setAge(int age) {
     this.age = age;
   }
+
+  public StudentProfile getStudentProfile() {
+    return studentProfile;
+  }
+
+  public void setStudentProfile(StudentProfile studentProfile) {
+    this.studentProfile = studentProfile;
+  }
+
+  public School getSchool() {
+    return school;
+  }
+
+  public void setSchool(School school) {
+    this.school = school;
+  }
 }
+ 
