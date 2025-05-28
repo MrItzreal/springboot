@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 */
 
 @RestController
-public class FirstController {
+public class StudentController {
 
   private final StudentRepository repository;
 
   // Constructor
-  public FirstController(StudentRepository repository) {
+  public StudentController(StudentRepository repository) {
     this.repository = repository;
   }
 

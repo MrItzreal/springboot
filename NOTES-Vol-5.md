@@ -84,3 +84,57 @@ ERDs are visual diagrams essential for database design. They provide a clear blu
 - **pgAdmin:** A popular administration and development platform for PostgreSQL, which includes ERD tool capabilities.
 
 ---
+
+# Handling Bidirectional Relationships in JSON with Jackson
+
+When working with entities that have a relationship with each other (e.g., a `School` has many `Students`, and each `Student` belongs to that `School`), serializing these objects to JSON can cause problems. Jackson, the default JSON library in Spring Boot, provides annotations to handle this correctly.
+
+### The Problem: Infinite Recursion
+
+When you have a bidirectional relationship, Jackson can get stuck in an infinite loop during serialization.
+
+Consider a `School` with a list of `Students`, and each `Student` has a reference back to the `School`. When Jackson tries to convert this to JSON, the following happens:
+
+1.  Jackson starts serializing the `School` object.
+2.  It finds the list of `Students` and starts serializing each `Student`.
+3.  While serializing a `Student`, it finds the reference back to the `School` object and starts serializing it.
+4.  It is now back at step 1, trying to serialize the same `School`, which contains a list of `Students`, and the loop continues forever.
+
+This infinite loop typically results in a `StackOverflowError` and crashes the application.
+
+### The Solution: `@JsonManagedReference` and `@JsonBackReference`
+
+These two annotations are used as a pair to tell Jackson how to handle a bidirectional relationship and break the infinite loop.
+
+- **`@JsonManagedReference`**:
+
+  - **What it is:** The "forward" part of the relationship. It is placed on the **parent** or "owning" side of the relationship (typically the "One" side in a `@OneToMany` relationship).
+  - **What it does:** It tells Jackson to serialize this part of the object normally. Think of it as the side that **manages** the relationship.
+  - **Example (in a `School` entity):**
+    ```java
+     @OneToMany(mappedBy = "school")
+     @JsonManagedReference
+     private List<Student> students;
+    ```
+
+- **`@JsonBackReference`**:
+  - **What it is:** The "back" part of the relationship. It is placed on the **child** or "non-owning" side (typically the "Many" side in a `@ManyToOne` relationship).
+  - **What it does:** It tells Jackson to **not** serialize this part of the object, which breaks the infinite loop. The JSON output will not include this field.
+  - **Example (in a `Student` entity):**
+    ```java
+     @ManyToOne
+     @JoinColumn(name = "school_id")
+     @JsonBackReference
+     private School school;
+    ```
+
+With this setup, when you serialize a `School`, it will include a list of its `Students`. When Jackson serializes each `Student` in that list, it will see `@JsonBackReference` and will **not** include the `School` field again, thus preventing the loop.
+
+### Key Points to Remember
+
+- `@JsonManagedReference` and `@JsonBackReference` are always used as a pair.
+- `@JsonManagedReference` goes on the **owning/parent** side of the relationship (usually the collection side in `@OneToMany`).
+- `@JsonBackReference` goes on the **non-owning/child** side of the relationship (usually the single object side in `@ManyToOne`).
+- These annotations only affect **serialization** (converting Java objects to JSON), not deserialization (converting JSON to Java objects).
+
+---
