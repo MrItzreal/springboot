@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver # The JDBC driver for PostgreSQL
   jpa:
     hibernate:
-      ddl-auto: create # Controls schema generation
+      ddl-auto: update # Controls schema generation
     show-sql: true # Logs executed SQL statements to the console
     properties:
       hibernate:

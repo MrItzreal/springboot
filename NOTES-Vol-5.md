@@ -138,3 +138,48 @@ With this setup, when you serialize a `School`, it will include a list of its `S
 - These annotations only affect **serialization** (converting Java objects to JSON), not deserialization (converting JSON to Java objects).
 
 ---
+
+# Data Transfer Objects (DTOs)
+
+Data Transfer Objects (DTOs) are simple objects used to transfer data between different layers or parts of an application. For example, they can be used between the controller and service layer, or between the server application and the client (e.g., a web browser or mobile app).
+
+The primary purpose of DTOs is to shape data into a structure that is suitable for a specific consumer, often by selectively exposing only the necessary information from underlying entities or by aggregating data from multiple sources.
+
+### Why Use DTOs?
+
+Employing DTOs in your application design offers several significant advantages:
+
+1.  **Data Hiding/Encapsulation:**
+
+    - DTOs allow you to expose only a specific subset of an entity's data to the client or other application layers.
+    - This is crucial for security and data privacy, as you can avoid exposing sensitive information (like internal IDs, raw dates of birth, or other private fields) that are not needed by the consumer.
+
+2.  **Decoupling:**
+
+    - DTOs help to decouple the data representation used by your internal domain entities from the data representation exposed by your API or used by other layers.
+    - This means you can modify your internal entity structure (e.g., add, remove, or rename fields) without necessarily breaking the contract with your clients, as long as the DTO structure remains compatible. Conversely, you can tailor DTOs for different clients without altering your core domain model.
+
+3.  **Performance:**
+
+    - DTOs can improve application performance, particularly by reducing the amount of data transferred over the network or between layers.
+    - If a client or a specific operation only requires a few fields from a large entity, sending a DTO containing just those fields is more efficient than sending the entire entity object.
+
+4.  **Data Transformation and Formatting:**
+
+    - DTOs provide a convenient place to transform or format data into a structure that is more suitable for the consumer.
+    - For example, you might want to format a `LocalDate` object into a specific string representation, combine multiple entity fields into a single DTO field, or calculate derived values.
+
+5.  **Avoiding Circular Dependencies in Serialization:**
+    - When dealing with entities that have bidirectional relationships, direct serialization can lead to infinite recursion loops (as previously discussed with `@JsonManagedReference` and `@JsonBackReference`).
+    - DTOs offer an alternative way to handle this by allowing you to define a data structure that "flattens" or omits these problematic relationships, thus avoiding serialization issues.
+
+### Summary
+
+DTOs are a valuable pattern in application development for managing data transfer effectively. They promote:
+
+- **Data Hiding:** Protecting sensitive information.
+- **Decoupling:** Creating flexible and maintainable layers.
+- **Performance:** Optimizing data transfer.
+- **Flexibility:** Tailoring data for specific consumers.
+
+---
