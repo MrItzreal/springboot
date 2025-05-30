@@ -3,7 +3,6 @@ package com.codewithizzy.springboot;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,7 @@ public class SchoolController {
   public SchoolController(SchoolRepository schoolRepository) {
     this.schoolRepository = schoolRepository;
   }
-
+  
   @PostMapping("/schools")
   public SchoolDto create(
       @RequestBody SchoolDto dto) {
