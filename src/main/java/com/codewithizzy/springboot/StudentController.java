@@ -33,17 +33,17 @@ public class StudentController {
   }
 
   @GetMapping("/students")
-  public List<Student> findAllStudent() {
+  public List<StudentResponseDto> findAllStudent() {
     return studentService.findAllStudent();
   }
 
   @GetMapping("/students/{student-id}")
-  public Student findStudentById(@PathVariable("student-id") Integer id) {
+  public StudentResponseDto findStudentById(@PathVariable("student-id") Integer id) {
     return studentService.findStudentById(id);
   }
 
   @GetMapping("/students/search/{student-name}")
-  public List<Student> findStudentsByName(@PathVariable("student-name") String name) {
+  public List<StudentResponseDto> findStudentsByName(@PathVariable("student-name") String name) {
     return studentService.findStudentsByName(name);
   }
 

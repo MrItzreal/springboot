@@ -1,6 +1,7 @@
 package com.codewithizzy.springboot;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -21,17 +22,19 @@ public class StudentService {
     return studentMapper.toStudentResponseDto(savedStudent);
   }
 
-  public List<Student> findAllStudent() {
-    return repository.findAll();
+  public List<StudentResponseDto> findAllStudent() {
+    return repository.findAll()
+        .stream().map(studentMapper::toStudentResponseDto).collect(Collectors.toList());
   }
 
-  public Student findStudentById(Integer id) {
-    return repository.findById(id)
-        .orElse(new Student());
+  public StudentResponseDto findStudentById(Integer id) {
+    return repository.findById(id).map(studentMapper::toStudentResponseDto)
+        .orElse(null);
   }
 
-  public List<Student> findStudentsByName(String name) {
-    return repository.findAllByFirstNameContaining(name);
+  public List<StudentResponseDto> findStudentsByName(String name) {
+    return repository.findAllByFirstNameContaining(name)
+        .stream().map(studentMapper::toStudentResponseDto).collect(Collectors.toList());
   }
 
   public void delete(Integer id) {
