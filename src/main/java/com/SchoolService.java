@@ -13,7 +13,7 @@ public class SchoolService {
   private final SchoolMapper schoolMapper;
   private final SchoolRepository schoolRepository;
 
-  // Constructor for repository & studentMapper
+  // Constructor for schoolRepository & schoolMapper
   public SchoolService(SchoolMapper schoolMapper, SchoolRepository schoolRepository) {
     this.schoolMapper = schoolMapper;
     this.schoolRepository = schoolRepository;
