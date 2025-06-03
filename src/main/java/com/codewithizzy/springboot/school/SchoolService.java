@@ -1,12 +1,8 @@
-package com;
+package com.codewithizzy.springboot.school;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
-import com.codewithizzy.springboot.SchoolDto;
-import com.codewithizzy.springboot.SchoolMapper;
-import com.codewithizzy.springboot.SchoolRepository;
 
 @Service
 public class SchoolService {

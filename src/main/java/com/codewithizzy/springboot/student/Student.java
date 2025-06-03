@@ -1,7 +1,8 @@
-package com.codewithizzy.springboot;
+package com.codewithizzy.springboot.student;
 
+import com.codewithizzy.springboot.school.School;
+import com.codewithizzy.springboot.studentprofile.StudentProfile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,6 +1,7 @@
-package com.codewithizzy.springboot;
+package com.codewithizzy.springboot.student;
 
 import org.springframework.stereotype.Service;
+import com.codewithizzy.springboot.school.School;
 
 @Service
 public class StudentMapper {
@@ -24,5 +25,4 @@ public class StudentMapper {
         student.getLastName(),
         student.getEmail());
   }
-
 }

@@ -1,9 +1,9 @@
-package com.codewithizzy.springboot;
+package com.codewithizzy.springboot.school;
 
 import java.util.List;
 
+import com.codewithizzy.springboot.student.Student;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

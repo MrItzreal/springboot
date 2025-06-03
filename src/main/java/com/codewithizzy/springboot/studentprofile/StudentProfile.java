@@ -1,5 +1,6 @@
-package com.codewithizzy.springboot;
+package com.codewithizzy.springboot.studentprofile;
 
+import com.codewithizzy.springboot.student.Student;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

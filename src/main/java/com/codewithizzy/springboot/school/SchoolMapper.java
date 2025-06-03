@@ -1,4 +1,4 @@
-package com.codewithizzy.springboot;
+package com.codewithizzy.springboot.school;
 
 import org.springframework.stereotype.Service;
 

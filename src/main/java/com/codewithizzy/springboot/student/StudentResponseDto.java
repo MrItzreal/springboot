@@ -1,4 +1,4 @@
-package com.codewithizzy.springboot;
+package com.codewithizzy.springboot.student;
 
 public record StudentResponseDto(
     String firstName,

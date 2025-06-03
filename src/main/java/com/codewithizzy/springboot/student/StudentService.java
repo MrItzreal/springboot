@@ -1,8 +1,7 @@
-package com.codewithizzy.springboot;
+package com.codewithizzy.springboot.student;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 
 @Service
