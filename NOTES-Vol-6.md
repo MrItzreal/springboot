@@ -106,4 +106,81 @@ JUnit 5 provides several annotations to control the lifecycle of your test class
 - **Purpose:** Used for one-time teardown operations that clean up resources created in the `@BeforeAll` method (e.g., closing a database connection).
 - **Requirement:** The method must be `static`.
 
+# Writing Meaningful Unit Tests with JUnit 5
+
+This volume covers fundamental patterns and tools for writing clear, effective, and robust unit tests using JUnit 5.
+
+### A. The "Given-When-Then" Test Structure
+
+A highly recommended pattern for structuring tests is **Given-When-Then** (also known as Arrange-Act-Assert). It makes tests readable, self-documenting, and easy to maintain.
+
+- **Given (or Arrange):**
+  - Set up all the necessary preconditions and input data for the test. This is where you create your test objects and configure your environment.
+  - _Example:_ Creating a `StudentDto` object to be used as input.
+- **When (or Act):**
+  - Execute the specific method or piece of code that you are testing. This is the action being performed.
+  - _Example:_ Calling the `mapper.toStudent(dto)` method.
+- **Then (or Assert):**
+  - Verify that the outcome of the action is what you expected. This is where you use assertions to check the results.
+  - _Example:_ Using `assertEquals` to check if the fields of the returned `Student` object match the DTO.
+
+### B. Common JUnit 5 Assertion Methods
+
+Assertions are static methods from the `org.junit.jupiter.api.Assertions` class that check a condition. If the condition is false, the assertion fails, which in turn fails the entire test.
+
+- **`assertEquals(expected, actual)`:**
+  - Checks if the `actual` value produced by your code is equal to the `expected` value. This is one of the most frequently used assertions.
+- **`assertNotNull(object)`:**
+  - Checks that the given `object` is not `null`. Useful for verifying that a method has correctly initialized or returned an object.
+- _(Many other assertions exist, such as `assertTrue`, `assertFalse`, `assertArrayEquals`, etc.)_
+
+### C. Testing for Exceptions
+
+A critical part of testing is verifying that your code handles error conditions correctly by throwing appropriate exceptions.
+
+- **`assertThrows(ExpectedException.class, executable)`:**
+  - **Purpose:** Asserts that executing a block of code (the `executable`, often provided as a lambda expression) throws a specific type of exception.
+  - **Behavior:**
+    - If the expected exception is thrown, the test passes, and the method **returns the caught exception object**.
+    - If a different exception is thrown, or if no exception is thrown at all, the test fails.
+- **Capturing and Inspecting the Exception:**
+
+  - Because `assertThrows` returns the exception, you can perform further assertions on it, such as verifying its message. This is a best practice.
+  - **Example:**
+
+    ```java
+    // Test that passing null to a method throws a NullPointerException
+    @Test
+    public void shouldThrowExceptionForNullInput() {
+        // Given (no setup needed for this case)
+
+        // When & Then
+        // Assert that the expected exception is thrown
+        var caughtException = assertThrows(
+            NullPointerException.class,
+            () -> mapper.toStudent(null) // The code that should throw
+        );
+
+        // Assert that the exception message is also correct
+        assertEquals(
+            "The student Dto should not be null",
+            caughtException.getMessage()
+        );
+    }
+    ```
+
+### D. Defensive Programming
+
+- **Concept:** The practice of writing code that anticipates potential problems and invalid inputs to make it more robust.
+- **Example:** Checking for `null` input at the beginning of a method and throwing an exception immediately with a clear message.
+  ```java
+  public Student toStudent(StudentDto dto) {
+     if (dto == null) {
+        throw new NullPointerException("The student Dto should not be null");
+      }
+     // ... rest of the method
+   }
+  ```
+- Testing (like with `assertThrows`) is how you verify that your defensive programming checks are working as intended.
+
 ---

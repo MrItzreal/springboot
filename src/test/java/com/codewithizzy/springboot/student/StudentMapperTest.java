@@ -1,40 +1,62 @@
 package com.codewithizzy.springboot.student;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class StudentMapperTest {
 
-  @BeforeAll
-  static void beforeAll() {
-    System.out.println("Inside the before all method");
-  }
-
-  @AfterAll
-  static void afterAll() {
-    System.out.println("Inside the after all method");
-  }
+  private StudentMapper mapper;
 
   @BeforeEach
   void setUp() {
-    System.out.println("Inside the before each method");
-  }
-
-  @AfterEach
-  void tearDown() {
-    System.out.println("Inside the after each method");
+    mapper = new StudentMapper();
   }
 
   @Test
-  public void testMethod1() {
-    System.out.println("My first test method");
+  public void shouldMapStudentDtoToStudent() {
+    // Given
+    StudentDto dto = new StudentDto(
+        "Izzy",
+        "DevG",
+        "fake@email.com",
+        1);
+
+    // When
+    Student student = mapper.toStudent(dto);
+
+    // Then
+    assertEquals(dto.firstName(), student.getFirstName());
+    assertEquals(dto.lastName(), student.getLastName());
+    assertEquals(dto.email(), student.getEmail());
+    assertNotNull(student.getSchool());
+    assertEquals(dto.schoolId(), student.getSchool().getId());
   }
 
   @Test
-  public void testMethod2() {
-    System.out.println("My second test method");
+  public void should_throw_null_pointer_exception_when_studentDto_is_null() {
+    var exp = assertThrows(NullPointerException.class, () -> mapper.toStudent(null));
+    assertEquals("The student Dto should not be null", exp.getMessage());
+  }
+
+  @Test
+  public void shouldMapStudentToStudentResponseDto() {
+    // Given
+    Student student = new Student(
+        "Pokemon",
+        "Yeung",
+        "syp@hk.com",
+        48);
+
+    // When
+    StudentResponseDto response = mapper.toStudentResponseDto(student);
+
+    // Then
+    assertEquals(response.firstName(), student.getFirstName());
+    assertEquals(response.lastName(), student.getLastName());
+    assertEquals(response.email(), student.getEmail());
   }
 }
